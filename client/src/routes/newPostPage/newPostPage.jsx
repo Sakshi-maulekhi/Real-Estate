@@ -56,7 +56,7 @@ function NewPostPage() {
 
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8">
 
-        {/* LEFT SIDE - FORM */}
+        {/* LEFT SIDE */}
         <div className="flex-[2] bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl shadow-purple-900/20">
 
           <h1 className="text-4xl font-bold mb-10 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
@@ -76,72 +76,48 @@ function NewPostPage() {
               { label: "Longitude", name: "longitude" },
               { label: "Income Policy", name: "income" },
               { label: "Total Size (sqft)", name: "size", type: "number" },
-              { label: "School", name: "school", type: "number" },
-              { label: "Bus", name: "bus", type: "number" },
-              { label: "Restaurant", name: "restaurant", type: "number" },
+              { label: "School (km)", name: "school", type: "number" },
+              { label: "Bus (km)", name: "bus", type: "number" },
+              { label: "Restaurant (km)", name: "restaurant", type: "number" },
             ].map((field) => (
               <div key={field.name} className="flex flex-col gap-2">
                 <label className="text-sm text-gray-400">{field.label}</label>
                 <input
                   name={field.name}
                   type={field.type || "text"}
-                  className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:ring-2 focus:ring-purple-500 outline-none"
+                  className="px-4 py-3 rounded-xl bg-zinc-800 text-white border border-white/10 focus:ring-2 focus:ring-purple-500 outline-none"
                 />
               </div>
             ))}
 
-            {/* Type */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm text-gray-400">Type</label>
-              <select
-                name="type"
-                className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="rent">Rent</option>
-                <option value="buy">Buy</option>
-              </select>
-            </div>
+            {/* TYPE */}
+            <SelectField label="Type" name="type">
+              <option value="rent">Rent</option>
+              <option value="buy">Buy</option>
+            </SelectField>
 
-            {/* Property */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm text-gray-400">Property</label>
-              <select
-                name="property"
-                className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="apartment">Apartment</option>
-                <option value="house">House</option>
-                <option value="condo">Condo</option>
-                <option value="land">Land</option>
-              </select>
-            </div>
+            {/* PROPERTY */}
+            <SelectField label="Property" name="property">
+              <option value="apartment">Apartment</option>
+              <option value="house">House</option>
+              <option value="condo">Condo</option>
+              <option value="land">Land</option>
+            </SelectField>
 
-            {/* Utilities */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm text-gray-400">Utilities Policy</label>
-              <select
-                name="utilities"
-                className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="owner">Owner</option>
-                <option value="tenant">Tenant</option>
-                <option value="shared">Shared</option>
-              </select>
-            </div>
+            {/* UTILITIES */}
+            <SelectField label="Utilities Policy" name="utilities">
+              <option value="owner">Owner</option>
+              <option value="tenant">Tenant</option>
+              <option value="shared">Shared</option>
+            </SelectField>
 
-            {/* Pet */}
-            <div className="flex flex-col gap-2">
-              <label className="text-sm text-gray-400">Pet Policy</label>
-              <select
-                name="pet"
-                className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:ring-2 focus:ring-purple-500"
-              >
-                <option value="allowed">Allowed</option>
-                <option value="not-allowed">Not Allowed</option>
-              </select>
-            </div>
+            {/* PET */}
+            <SelectField label="Pet Policy" name="pet">
+              <option value="allowed">Allowed</option>
+              <option value="not-allowed">Not Allowed</option>
+            </SelectField>
 
-            {/* Description Full Width */}
+            {/* DESCRIPTION */}
             <div className="md:col-span-2 flex flex-col gap-2">
               <label className="text-sm text-gray-400">Description</label>
               <div className="bg-white rounded-xl overflow-hidden text-black">
@@ -149,7 +125,7 @@ function NewPostPage() {
               </div>
             </div>
 
-            <button className="md:col-span-2 mt-6 py-4 rounded-xl font-semibold bg-purple-600 hover:bg-purple-700 transition-all shadow-lg shadow-purple-900/30">
+            <button className="md:col-span-2 mt-6 py-4 rounded-xl font-semibold bg-purple-600 hover:bg-purple-700 transition shadow-lg shadow-purple-900/30">
               Add Post
             </button>
 
@@ -158,10 +134,11 @@ function NewPostPage() {
                 {error}
               </span>
             )}
+
           </form>
         </div>
 
-        {/* RIGHT SIDE - IMAGE UPLOAD */}
+        {/* RIGHT SIDE */}
         <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl shadow-purple-900/20 flex flex-col gap-6">
 
           <h2 className="text-xl font-semibold text-gray-300">Images</h2>
@@ -186,9 +163,28 @@ function NewPostPage() {
             }}
             setState={setImages}
           />
-
         </div>
 
+      </div>
+    </div>
+  );
+}
+
+/* 🔥 Reusable Dark Select Component */
+function SelectField({ label, name, children }) {
+  return (
+    <div className="flex flex-col gap-2">
+      <label className="text-sm text-gray-400">{label}</label>
+      <div className="relative">
+        <select
+          name={name}
+          className="w-full px-4 py-3 rounded-xl bg-zinc-800 text-white border border-white/10 focus:ring-2 focus:ring-purple-500 outline-none appearance-none cursor-pointer"
+        >
+          {children}
+        </select>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+          ▼
+        </div>
       </div>
     </div>
   );
