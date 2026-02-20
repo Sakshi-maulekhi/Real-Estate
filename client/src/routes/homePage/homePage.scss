@@ -1,0 +1,112 @@
+// @import "../../responsive.scss";
+
+// .homePage {
+//   display: flex;
+//   height: 100%;
+//   overflow-y: auto;
+
+//   /* Hide scrollbar by default */
+//   scrollbar-width: thin;
+//   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+
+//   &::-webkit-scrollbar {
+//     width: 8px;
+//   }
+
+//   &::-webkit-scrollbar-track {
+//     background: transparent;
+//   }
+
+//   &::-webkit-scrollbar-thumb {
+//     background-color: rgba(0, 0, 0, 0.2);
+//     border-radius: 10px;
+//     border: 2px solid transparent;
+//     background-clip: content-box;
+//     transition: background-color 0.3s ease;
+
+//     &:hover {
+//       background-color: rgba(0, 0, 0, 0.4);
+//     }
+//   }
+
+//   .textContainer {
+//     flex: 3;
+
+//     .wrapper {
+//       padding-right: 100px;
+//       display: flex;
+//       flex-direction: column;
+//       justify-content: center;
+//       gap: 50px;
+//       height: 100%;
+
+//       @include lg{
+//         padding-right: 50px;
+//       }
+
+//       @include md{
+//         padding: 0;
+//       }
+
+//       @include sm{
+//         justify-content: flex-start;
+//       }
+
+//       .title {
+//         font-size: 64px;
+//         overflow: hidden;
+//         text-overflow: ellipsis;
+//         white-space: nowrap;
+//         max-width: 95%;
+
+//         @include lg {
+//           font-size: 48px;
+//         }
+//       }
+
+//       .boxes {
+//         display: flex;
+//         justify-content: space-between;
+
+//         @include sm {
+//           display: none;
+//         }
+
+//         h1 {
+//           font-size: 36px;
+
+//           @include lg {
+//             font-size: 32px;
+//           }
+//         }
+
+//         h2 {
+//           font-size: 20px;
+//           font-weight: 300;
+//         }
+//       }
+//     }
+//   }
+
+//   .imgContainer {
+//     flex: 2;
+//     background-color: #fcf5f3;
+//     position: relative;
+//     display: flex;
+//     align-items: center;
+
+//     @include md {
+//       display: none;
+//     }
+
+//     img {
+//       width: 115%;
+//       position: absolute;
+//       right: 0;
+
+//       @include lg {
+//         width: 105%;
+//       }
+//     }
+//   }
+// }

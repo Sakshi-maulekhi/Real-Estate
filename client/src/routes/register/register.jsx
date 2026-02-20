@@ -1,0 +1,123 @@
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import apiRequest from "../../lib/apiRequest";
+
+function Register() {
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+    const formData = new FormData(e.target);
+
+    const username = formData.get("username");
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    try {
+      await apiRequest.post("/auth/register", {
+        username,
+        email,
+        password,
+      });
+
+      navigate("/login");
+    } catch (err) {
+      setError(err.response?.data?.message || "Something went wrong");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black via-zinc-950 to-zinc-900 px-6">
+
+      <div className="w-full max-w-3xl flex rounded-2xl overflow-hidden border border-white/10 bg-white/5 backdrop-blur-xl shadow-xl shadow-purple-900/20">
+
+        {/* LEFT SIDE - FORM */}
+        <div className="flex-1 p-8 flex flex-col justify-center text-white">
+
+          <h1 className="text-3xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
+            Create Your Account ✨
+          </h1>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+
+            <input
+              name="username"
+              type="text"
+              placeholder="Username"
+              required
+              minLength={3}
+              maxLength={20}
+              className="px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+            />
+
+            <input
+              name="email"
+              type="email"
+              placeholder="Email"
+              required
+              className="px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+            />
+
+            <input
+              name="password"
+              type="password"
+              placeholder="Password"
+              required
+              minLength={6}
+              className="px-4 py-3 rounded-lg bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all"
+            />
+
+            <button
+              disabled={isLoading}
+              className="py-3 rounded-lg font-semibold bg-purple-600 hover:bg-purple-700 transition-all duration-300 disabled:bg-purple-900/40 disabled:cursor-not-allowed shadow-md shadow-purple-900/30"
+            >
+              {isLoading ? "Creating account..." : "Register"}
+            </button>
+
+            {error && (
+              <span className="text-red-400 text-sm bg-red-900/20 border border-red-500/30 px-3 py-2 rounded-lg">
+                {error}
+              </span>
+            )}
+
+            <Link
+              to="/login"
+              className="text-sm text-gray-400 hover:text-purple-400 transition-colors w-max"
+            >
+              Already have an account? Login
+            </Link>
+
+          </form>
+        </div>
+
+        {/* RIGHT SIDE - IMAGE / INFO */}
+        <div className="hidden lg:flex flex-1 items-center justify-center bg-gradient-to-br from-purple-900/40 to-black relative">
+          <img
+            src="/bg.png"
+            alt=""
+            className="absolute inset-0 w-full h-full object-cover opacity-15"
+          />
+          <div className="relative z-10 text-center px-8">
+            <h2 className="text-2xl font-bold text-white mb-3">
+              Start Your Journey 🏡
+            </h2>
+            <p className="text-gray-300 text-sm">
+              Create an account to explore listings, save properties and chat with owners instantly.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  );
+}
+
+export default Register;
