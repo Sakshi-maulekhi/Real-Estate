@@ -7,12 +7,12 @@ function Card({ item }) {
   const { currentUser } = useContext(AuthContext);
   const isOwner = currentUser?.id === item.userId;
 
-  // 🔥 Get saved posts key per user
+  
   const storageKey = currentUser
     ? `savedPosts_${currentUser.id}`
     : null;
 
-  // 🔥 Initialize saved state from localStorage
+ 
   const [saved, setSaved] = useState(() => {
     if (!storageKey) return false;
 
@@ -22,7 +22,7 @@ function Card({ item }) {
     return savedPosts.includes(item.id);
   });
 
-  // 🔥 Handle Save
+  
   const handleSave = async () => {
     if (!currentUser) return;
 
@@ -67,7 +67,7 @@ function Card({ item }) {
     }
   };
 
-  // 🔥 Handle Delete
+  
   const handleDelete = async () => {
     try {
       await apiRequest.delete(`/posts/${item.id}`);

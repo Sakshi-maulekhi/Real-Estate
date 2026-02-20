@@ -106,7 +106,7 @@ function EditPostPage() {
               </div>
             ))}
 
-            {/* Select Fields */}
+            
             <div className="flex flex-col gap-2">
               <label className="text-sm text-gray-400">Type</label>
               <select
@@ -137,7 +137,7 @@ function EditPostPage() {
               </select>
             </div>
 
-            {/* Description Full Width */}
+            
             <div className="md:col-span-2 flex flex-col gap-2">
               <label className="text-sm text-gray-400">Description</label>
               <div className="bg-white rounded-xl overflow-hidden text-black">
@@ -157,7 +157,7 @@ function EditPostPage() {
           </form>
         </div>
 
-        {/* RIGHT SIDE - IMAGES */}
+        
         <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-xl shadow-purple-900/20 flex flex-col gap-6">
 
           <h2 className="text-xl font-semibold text-gray-300">Images</h2>

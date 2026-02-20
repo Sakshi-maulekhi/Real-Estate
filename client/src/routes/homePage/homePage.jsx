@@ -2,7 +2,6 @@ import { useContext } from "react";
 import SearchBar from "../../components/searchBar/SearchBar";
 import { AuthContext } from "../../context/AuthContext";
 
-// --- Data Constants ---
 const STATS = [
   { value: "16+", label: "Years Experience" },
   { value: "200", label: "Awards Gained" },
@@ -43,7 +42,7 @@ const FeatureCard = ({ title, description }) => (
   </div>
 );
 
-// --- Main Page ---
+
 
 function HomePage() {
   const { currentUser } = useContext(AuthContext);
@@ -51,13 +50,11 @@ function HomePage() {
   return (
     <div className="h-full w-full bg-gradient-to-br from-black via-zinc-950 to-zinc-900 text-white overflow-y-auto custom-scrollbar">
 
-      {/* HERO SECTION */}
-      {/* HERO SECTION */}
       <section className="relative overflow-hidden pt-20 pb-20">
 
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-stretch">
 
-          {/* LEFT CONTENT */}
+          
           <div className="space-y-8 flex flex-col justify-between">
             <div className="space-y-8">
               <h1 className="text-5xl lg:text-6xl font-bold leading-tight">
@@ -76,7 +73,7 @@ function HomePage() {
             <SearchBar />
           </div>
 
-          {/* RIGHT IMAGE */}
+         
           <div className="hidden lg:flex items-end">
             <div className="w-full bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-2xl">
               <img
@@ -90,9 +87,6 @@ function HomePage() {
         </div>
       </section>
 
-
-
-      {/* FEATURES SECTION */}
       <section className="max-w-7xl mx-auto px-6 py-5 border-t border-white/5">
         <div className="text-center space-y-4 mb-16">
           <h2 className="text-3xl sm:text-4xl font-bold">
