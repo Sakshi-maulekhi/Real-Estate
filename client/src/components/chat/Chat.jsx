@@ -268,7 +268,7 @@ function Chat({ chats, userIdToChat }) {
           {/* INPUT */}
           <form
             onSubmit={handleSubmit}
-            className="flex items-center gap-3 px-6 py-4 border-t border-white/10 bg-zinc-950"
+            className="flex items-center gap-1 px-2 py-4 border-t border-white/10 bg-zinc-950"
           >
             <input
               name="text"
@@ -278,7 +278,7 @@ function Chat({ chats, userIdToChat }) {
 
             <button
               type="submit"
-              className="bg-purple-600 hover:bg-purple-700 transition px-5 py-2 rounded-full text-sm font-medium"
+              className="bg-purple-600 hover:bg-purple-700 transition px-4 py-2 rounded-full text-sm font-medium"
             >
               Send
             </button>
