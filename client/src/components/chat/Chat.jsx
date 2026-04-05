@@ -10,28 +10,30 @@ function Chat({ chats, userIdToChat }) {
   const { currentUser } = useContext(AuthContext);
   const { socket } = useContext(SocketContext);
 
+  const messageContainerRef = useRef();
   const messageEndRef = useRef();
 
   const decrease = useNotificationStore((state) => state.decrease);
 
-  // Auto-open chat with specified user on mount
+ 
   useEffect(() => {
     if (userIdToChat) {
       const initializeChat = async () => {
         try {
-          // First, check if a chat already exists with this user
+          
           const existingChat = chats?.find(c => c.receiver.id === userIdToChat);
 
           if (existingChat) {
-            // Chat exists, open it
+            
             handleOpenChat(existingChat.id, existingChat.receiver);
           } else {
-            // Chat doesn't exist, create one
-            const res = await apiRequest.post("/chats", {
-              receiverId: userIdToChat,
-            });
+            
+                setChat({
+                  receiver: { id: userIdToChat },
+                  messages: [],
+                });
 
-            // Get the user details for the receiver
+            
             try {
               const userRes = await apiRequest.get(`/users/${userIdToChat}`);
               const receiver = {
@@ -64,10 +66,16 @@ function Chat({ chats, userIdToChat }) {
   }, [userIdToChat, chats]);
 
   useEffect(() => {
-    messageEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chat]);
+  if (messageContainerRef.current) {
+    messageContainerRef.current.scrollTo({
+      top: messageContainerRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }
+}, [chat?.messages]);
 
   const handleOpenChat = async (id, receiver) => {
+    
     try {
       const res = await apiRequest.get("/chats/" + id);
       setChat({
@@ -77,7 +85,7 @@ function Chat({ chats, userIdToChat }) {
       });
     } catch (err) {
       console.log("Error opening chat:", err);
-      // If chat fails to load, still set it with empty messages
+     
       setChat({
         id,
         receiver,
@@ -89,55 +97,95 @@ function Chat({ chats, userIdToChat }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData(e.target);
-    const text = formData.get("text");
+  const formData = new FormData(e.target);
+  const text = formData.get("text");
 
-    if (!text) return;
-    try {
-      const res = await apiRequest.post("/messages/" + chat.id, { text });
-      setChat((prev) => ({
-        ...prev,
-        messages: prev.messages ? [...prev.messages, res.data] : [res.data]
-      }));
-      e.target.reset();
-      socket.emit("sendMessage", {
+  if (!text) return;
+
+  try {
+    let currentChatId = chat?.id;
+    let createdChat = null;
+
+    
+    if (!currentChatId) {
+      const res = await apiRequest.post("/chats", {
         receiverId: chat.receiver.id,
-        data: { ...res.data, chatId: chat.id },
       });
-    } catch (err) {
-      console.log(err);
+
+      createdChat = res.data;
+      currentChatId = createdChat.id;
+
+      
+      setChat({
+        ...createdChat,
+        receiver: chat.receiver,
+        messages: [],
+      });
     }
+
+    
+    const res = await apiRequest.post(
+      "/messages/" + currentChatId,
+      { text }
+    );
+
+    
+    setChat((prev) => ({
+      ...prev,
+      messages: prev.messages
+        ? [...prev.messages, res.data]
+        : [res.data],
+      lastMessage: res.data.text,
+    }));
+
+   
+    socket.emit("sendMessage", {
+      receiverId: chat.receiver.id,
+      data: {
+        ...res.data,
+        chatId: currentChatId,
+      },
+    });
+
+    e.target.reset();
+
+  } catch (err) {
+    console.log("Error sending message:", err);
+  }
+  
+};
+
+ useEffect(() => {
+  if (!socket) return;
+
+  const handleMessage = (data) => {
+    if (data.userId === currentUser.id) return;
+
+    setChat((prev) => {
+      if (!prev) return prev;
+
+      if (prev.id && prev.id !== data.chatId) return prev;
+
+      const exists = prev.messages?.some(m => m.id === data.id);
+      if (exists) return prev;
+
+      return {
+        ...prev,
+        id: prev.id || data.chatId,
+        messages: [...(prev.messages || []), data],
+      };
+    });
   };
 
-  useEffect(() => {
-    const read = async () => {
-      try {
-        await apiRequest.put("/chats/read/" + chat.id);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  socket.on("getMessage", handleMessage);
 
-    if (chat && socket) {
-      const handleMessage = (data) => {
-        if (chat.id === data.chatId) {
-          setChat((prev) => ({
-            ...prev,
-            messages: prev.messages ? [...prev.messages, data] : [data]
-          }));
-          read();
-        }
-      };
+  return () => {
+    socket.off("getMessage", handleMessage);
+  };
+}, [socket, currentUser]);
 
-      socket.on("getMessage", handleMessage);
-
-      return () => {
-        socket.off("getMessage", handleMessage);
-      };
-    }
-  }, [socket, chat]);
 
   return (
     <div className="flex h-[85vh] bg-zinc-900 rounded-2xl overflow-hidden border border-white/10 shadow-xl">
@@ -232,7 +280,10 @@ function Chat({ chats, userIdToChat }) {
           </div>
 
           {/* MESSAGES */}
-          <div className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-6 space-y-4 scrollbar-thin scrollbar-thumb-black/10">
+          <div
+  ref={messageContainerRef}
+  className="flex-1 overflow-y-auto overflow-x-hidden px-6 py-6 space-y-4 scrollbar-thin scrollbar-thumb-black/10"
+>
 
             {chat.messages?.length > 0 ? (
               chat.messages.map((message) => (
