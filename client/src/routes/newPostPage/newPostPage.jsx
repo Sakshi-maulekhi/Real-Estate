@@ -170,7 +170,7 @@ function NewPostPage() {
   );
 }
 
-/* 🔥 Reusable Dark Select Component */
+
 function SelectField({ label, name, children }) {
   return (
     <div className="flex flex-col gap-2">
