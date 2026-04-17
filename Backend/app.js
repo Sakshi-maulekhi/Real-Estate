@@ -7,6 +7,7 @@ import testRoute from "./routes/test.route.js";
 import userRoute from "./routes/user.route.js";
 import chatRoute from "./routes/chat.route.js";
 import messageRoute from "./routes/message.route.js";
+ 
 
 
 
@@ -15,7 +16,7 @@ const app = express();
 console.log("CLIENT_URL:", process.env.CLIENT_URL);
 app.use(cors({
   origin: ["https://real-estate-neon-psi.vercel.app/",
-    CLIENT_URL
+    process.env.CLIENT_URL
   ],
   credentials: true
 }));
