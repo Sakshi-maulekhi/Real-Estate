@@ -49,5 +49,5 @@ io.on("connection", (socket) => {
   });
 });
 
-io.listen(4001);
+
 console.log("Socket server running on port 4001");
