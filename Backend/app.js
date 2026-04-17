@@ -14,7 +14,9 @@ import messageRoute from "./routes/message.route.js";
 const app = express();
 console.log("CLIENT_URL:", process.env.CLIENT_URL);
 app.use(cors({
-  origin: "https://real-estate-neon-psi.vercel.app/",
+  origin: ["https://real-estate-neon-psi.vercel.app/",
+    CLIENT_URL
+  ],
   credentials: true
 }));
 app.use(express.json());
