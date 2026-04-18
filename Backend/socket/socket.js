@@ -1,6 +1,11 @@
+import express from "express";
+import http from "http";
 import { Server } from "socket.io";
 
-const io = new Server({
+const app = express();
+const server = http.createServer(app);
+
+const io = new Server(server, {
   cors: {
     origin: "https://real-estate-zx4p.onrender.com",
   },
@@ -48,6 +53,7 @@ io.on("connection", (socket) => {
     console.log("🔴 User disconnected:", socket.id);
   });
 });
+
 
 
 console.log("Socket server running on port 4001");
